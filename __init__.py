@@ -41,11 +41,15 @@ def inicio_sesion(self):
 def formatear_fecha(fecha_a_formatear):
     fecha_separada = fecha_a_formatear.split(", ")
     dia_semana = fecha_separada[0]
-    hora = fecha_separada[2]
-    mes_dia = fecha_separada[1].split(" ")
-    dia = mes_dia[0]
-    mes = mes_dia[1]
-    fecha_formateada = dia_semana + " " + dia + " de " + mes + " a las " + hora
+    if(dia_semana == "Mañana"):
+            hora = fecha_separada[1]
+            fecha_formateada = dia_semana + " a las " + hora
+    else:
+        hora = fecha_separada[2]
+        mes_dia = fecha_separada[1].split(" ")
+        dia = mes_dia[0]
+        mes = mes_dia[1]
+        fecha_formateada = dia_semana + " " + dia + " de " + mes + " a las " + hora
     return fecha_formateada
 
 
