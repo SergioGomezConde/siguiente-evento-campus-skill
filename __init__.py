@@ -43,7 +43,7 @@ def formatear_fecha(fecha_a_formatear):
     dia_semana = fecha_separada[0]
     if(dia_semana == "Mañana"):
             hora = fecha_separada[1]
-            fecha_formateada = " " + dia_semana + " a las " + hora
+            fecha_formateada = " " + str(dia_semana).upper() + " a las " + hora
     else:
         hora = fecha_separada[2]
         mes_dia = fecha_separada[1].split(" ")
