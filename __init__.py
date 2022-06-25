@@ -49,7 +49,7 @@ def formatear_fecha(fecha_a_formatear):
         mes_dia = fecha_separada[1].split(" ")
         dia = mes_dia[0]
         mes = mes_dia[1]
-        fecha_formateada = dia_semana + " " + dia + " de " + mes + " a las " + hora
+        fecha_formateada = "el " + dia_semana + " " + dia + " de " + mes + " a las " + hora
     return fecha_formateada
 
 
@@ -68,7 +68,7 @@ class SiguienteEventoCampus(MycroftSkill):
         eventos = driver.find_elements(by=By.CLASS_NAME, value='event')
 
         # Respuesta con el evento proximo mas cercano
-        self.speak("Su proximo evento es " + eventos[0].find_element(by=By.TAG_NAME, value='h3').text + " el " + formatear_fecha(
+        self.speak("Su proximo evento es " + eventos[0].find_element(by=By.TAG_NAME, value='h3').text + formatear_fecha(
             eventos[0].find_element(by=By.CLASS_NAME, value='col-11').text.split(" » ")[0]))
 
         driver.close()
