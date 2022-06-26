@@ -68,7 +68,8 @@ class SiguienteEventoCampus(MycroftSkill):
         eventos = driver.find_elements(by=By.CLASS_NAME, value='event')
 
         # Respuesta con el evento proximo mas cercano
-        self.speak("Su proximo evento es " + eventos[0].find_element(by=By.TAG_NAME, value='h3').text + formatear_fecha(
+        self.speak_dialog('campus.evento.siguiente')
+        self.speak(eventos[0].find_element(by=By.TAG_NAME, value='h3').text + formatear_fecha(
             eventos[0].find_element(by=By.CLASS_NAME, value='col-11').text.split(" » ")[0]))
 
         driver.close()
