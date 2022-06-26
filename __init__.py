@@ -41,7 +41,7 @@ def inicio_sesion(self):
 def formatear_fecha(fecha_a_formatear):
     fecha_separada = fecha_a_formatear.split(", ")
     dia_semana = fecha_separada[0]
-    if(dia_semana == "Mañana"):
+    if(dia_semana == "Mañana" or dia_semana == "Hoy"):
             hora = fecha_separada[1]
             fecha_formateada = " " + str(dia_semana).lower() + " a las " + hora
     else:
