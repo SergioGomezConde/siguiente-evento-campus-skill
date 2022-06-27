@@ -1,11 +1,16 @@
 from lib2to3.pgen2 import driver
-import time
+import json
 
 from mycroft import MycroftSkill, intent_file_handler
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
+from datetime import datetime
+from datetime import date
 
+# Fichero JSON donde almacenar la informacion
+ficheroJSON = "/home/serggom/data.json"
+informacion = {'asignaturas': [], 'usuario': [], 'eventos': [], 'siguiente_evento': [], 'mensajes': []}
 
 def inicio_sesion(self):
     # Datos de acceso fijos
@@ -41,15 +46,28 @@ def inicio_sesion(self):
 def formatear_fecha(fecha_a_formatear):
     fecha_separada = fecha_a_formatear.split(", ")
     dia_semana = fecha_separada[0]
-    if(dia_semana == "Mañana" or dia_semana == "Hoy"):
-            hora = fecha_separada[1]
-            fecha_formateada = " " + str(dia_semana).lower() + " a las " + hora
+    if (dia_semana == "Hoy"):
+        hora = fecha_separada[1]
+        dia = date.today().day
+        mes = date.today().month
+        anio = date.today().year
+        fecha_formateada = dia + " de " + mes + " del " + anio + " a las " + hora
+
+    elif (dia_semana == "Mañana"):
+        hora = fecha_separada[1]
+        dia = date.today().day
+        mes = date.today().month
+        anio = date.today().year
+        fecha_formateada = dia + " de " + mes + " del " + anio + " a las " + hora
+
     else:
         hora = fecha_separada[2]
         mes_dia = fecha_separada[1].split(" ")
         dia = mes_dia[0]
         mes = mes_dia[1]
-        fecha_formateada = "el " + dia_semana + " " + dia + " de " + mes + " a las " + hora
+        anio = date.today().year
+        fecha_formateada = dia + " de " + mes + " del " + anio + " a las " + hora
+
     return fecha_formateada
 
 
@@ -65,12 +83,29 @@ class SiguienteEventoCampus(MycroftSkill):
         driver.get('https://campusvirtual.uva.es/calendar/view.php?view=upcoming')
 
         # Obtencion de la lista de eventos proximos
-        eventos = driver.find_elements(by=By.CLASS_NAME, value='event')
+        eventos_siguientes = driver.find_elements(by=By.CLASS_NAME, value='event')
 
-        # Respuesta con el evento proximo mas cercano
-        self.speak_dialog('campus.evento.siguiente')
-        self.speak(eventos[0].find_element(by=By.TAG_NAME, value='h3').text + formatear_fecha(
-            eventos[0].find_element(by=By.CLASS_NAME, value='col-11').text.split(" » ")[0]))
+        # Almacenamiento de la informacion en el fichero JSON
+        fecha = str(formatear_fecha(eventos_siguientes[0].find_element(by=By.CLASS_NAME, value='col-11').text.split(" » ")[0])).split(" a las ")
+        informacion['siguiente_evento'].append({
+            'nombre': eventos_siguientes[0].find_element(by=By.TAG_NAME, value='h3').text,
+            'fecha': fecha[0],
+            'hora': fecha[1]
+        })
+
+        with open(ficheroJSON, 'w') as ficheroDatos:
+                json.dump(informacion, ficheroDatos, indent=4)
+
+        # Lectura de la informacion del fichero JSON
+        with open(ficheroJSON) as ficheroEventos:
+            data = json.load(ficheroEventos)
+            for event in data['siguiente_evento']:
+                self.speak("El " + event['fecha'] + " a las " + event['hora'] + " tienes " + event['nombre'])
+
+        # # Respuesta con el evento proximo mas cercano
+        # self.speak_dialog('campus.evento.siguiente')
+        # self.speak(eventos[0].find_element(by=By.TAG_NAME, value='h3').text + formatear_fecha(
+        #     eventos[0].find_element(by=By.CLASS_NAME, value='col-11').text.split(" » ")[0]))
 
         driver.close()
 
