@@ -74,7 +74,8 @@ def formatear_fecha(fecha_a_formatear):
         dia = date.today().day
         mes = date.today().month
         anio = date.today().year
-        fecha_formateada = str(dia) + " de " + numero_a_mes(str(mes)) + " del " + str(anio) + " a las " + str(hora)
+        # fecha_formateada = str(dia) + " de " + numero_a_mes(str(mes)) + " del " + str(anio) + " a las " + str(hora)
+        fecha_formateada = str(dia) + "/" + str(mes) + "/" + str(anio) + " a las " + str(hora)
 
     else:
         hora = fecha_separada[2]
