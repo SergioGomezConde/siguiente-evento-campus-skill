@@ -113,14 +113,19 @@ class SiguienteEventoCampus(MycroftSkill):
 #         with open(ficheroJSON, 'w') as ficheroDatos:
 #                 json.dump(informacion, ficheroDatos, indent=4)
 
-        # Lectura de la informacion del fichero JSON
-        with open(ficheroJSON) as ficheroEventos:
-            data = json.load(ficheroEventos)
-            if len(data['siguiente_evento']) > 0:
-                for event in data['siguiente_evento']:
-                    self.speak("El " + event['fecha'] + " a las " + event['hora'] + " tienes " + event['nombre'])
-            else:
-                self.speak("No existen eventos próximos")
+        if os.path.exists('testfile.txt'):
+    
+            # Lectura de la informacion del fichero JSON
+            with open(ficheroJSON) as ficheroEventos:
+                data = json.load(ficheroEventos)
+                if len(data['siguiente_evento']) > 0:
+                    for event in data['siguiente_evento']:
+                        self.speak("El " + event['fecha'] + " a las " + event['hora'] + " tienes " + event['nombre'])
+                else:
+                    self.speak("No existen eventos próximos")
+                    
+         else:
+            self.speak("No dispongo de esa información")
 
         # # Respuesta con el evento proximo mas cercano
         # self.speak_dialog('campus.evento.siguiente')
