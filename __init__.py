@@ -124,7 +124,7 @@ class SiguienteEventoCampus(MycroftSkill):
                 else:
                     self.speak("No existen eventos próximos")
                     
-         else:
+        else:
             self.speak("No dispongo de esa información")
 
         # # Respuesta con el evento proximo mas cercano
