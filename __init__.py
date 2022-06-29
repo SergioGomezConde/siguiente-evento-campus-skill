@@ -9,7 +9,7 @@ from mycroft import MycroftSkill, intent_file_handler
 # from datetime import date
 
 # Fichero JSON donde almacenar la informacion
-ficheroJSON = "/home/serggom/scraping/data.json"
+ficheroJSON = "/home/serggom/scraping/datos.json"
 # informacion = {'asignaturas': [], 'usuario': [], 'eventos': [], 'siguiente_evento': [], 'mensajes': []}
 
 def inicio_sesion(self):
