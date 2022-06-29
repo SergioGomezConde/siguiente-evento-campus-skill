@@ -126,7 +126,7 @@ class SiguienteEventoCampus(MycroftSkill):
                     self.speak("No existen eventos próximos")
                     
         else:
-            self.speak("No dispongo de esa información")
+            self.speak("Lo siento, no dispongo de esa información")
 
         # # Respuesta con el evento proximo mas cercano
         # self.speak_dialog('campus.evento.siguiente')
