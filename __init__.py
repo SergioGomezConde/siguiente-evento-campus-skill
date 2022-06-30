@@ -114,7 +114,7 @@ class SiguienteEventoCampus(MycroftSkill):
 #         with open(ficheroJSON, 'w') as ficheroDatos:
 #                 json.dump(informacion, ficheroDatos, indent=4)
 
-        if os.path.exists('testfile.txt'):
+        if os.path.exists(ficheroJSON):
     
             # Lectura de la informacion del fichero JSON
             with open(ficheroJSON) as ficheroEventos:
