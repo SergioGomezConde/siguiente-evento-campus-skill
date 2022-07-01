@@ -1,16 +1,17 @@
 from lib2to3.pgen2 import driver
 import json
+import os
 
 from mycroft import MycroftSkill, intent_file_handler
-from selenium import webdriver
-from selenium.webdriver.chrome.options import Options
-from selenium.webdriver.common.by import By
-from datetime import datetime
-from datetime import date
+# from selenium import webdriver
+# from selenium.webdriver.chrome.options import Options
+# from selenium.webdriver.common.by import By
+# from datetime import datetime
+# from datetime import date
 
 # Fichero JSON donde almacenar la informacion
-ficheroJSON = "/home/serggom/data.json"
-informacion = {'asignaturas': [], 'usuario': [], 'eventos': [], 'siguiente_evento': [], 'mensajes': []}
+ficheroJSON = "/home/serggom/scraping/datos.json"
+# informacion = {'asignaturas': [], 'usuario': [], 'eventos': [], 'siguiente_evento': [], 'mensajes': []}
 
 def inicio_sesion(self):
     # Datos de acceso fijos
@@ -94,37 +95,45 @@ class SiguienteEventoCampus(MycroftSkill):
 
     @intent_file_handler('campus.evento.siguiente.intent')
     def handle_campus_evento_siguiente(self, message):
-        driver = inicio_sesion(self)
+#         driver = inicio_sesion(self)
 
-        # Acceso al calendario en vista de eventos proximos
-        driver.get('https://campusvirtual.uva.es/calendar/view.php?view=upcoming')
+#         # Acceso al calendario en vista de eventos proximos
+#         driver.get('https://campusvirtual.uva.es/calendar/view.php?view=upcoming')
 
-        # Obtencion de la lista de eventos proximos
-        eventos_siguientes = driver.find_elements(by=By.CLASS_NAME, value='event')
+#         # Obtencion de la lista de eventos proximos
+#         eventos_siguientes = driver.find_elements(by=By.CLASS_NAME, value='event')
 
-        # Almacenamiento de la informacion en el fichero JSON
-        fecha = str(formatear_fecha(eventos_siguientes[0].find_element(by=By.CLASS_NAME, value='col-11').text.split(" » ")[0])).split(" a las ")
-        informacion['siguiente_evento'].append({
-            'nombre': eventos_siguientes[0].find_element(by=By.TAG_NAME, value='h3').text,
-            'fecha': fecha[0],
-            'hora': fecha[1]
-        })
+#         # Almacenamiento de la informacion en el fichero JSON
+#         fecha = str(formatear_fecha(eventos_siguientes[0].find_element(by=By.CLASS_NAME, value='col-11').text.split(" » ")[0])).split(" a las ")
+#         informacion['siguiente_evento'].append({
+#             'nombre': eventos_siguientes[0].find_element(by=By.TAG_NAME, value='h3').text,
+#             'fecha': fecha[0],
+#             'hora': fecha[1]
+#         })
 
-        with open(ficheroJSON, 'w') as ficheroDatos:
-                json.dump(informacion, ficheroDatos, indent=4)
+#         with open(ficheroJSON, 'w') as ficheroDatos:
+#                 json.dump(informacion, ficheroDatos, indent=4)
 
-        # Lectura de la informacion del fichero JSON
-        with open(ficheroJSON) as ficheroEventos:
-            data = json.load(ficheroEventos)
-            for event in data['siguiente_evento']:
-                self.speak("El " + event['fecha'] + " a las " + event['hora'] + " tienes " + event['nombre'])
+        if os.path.exists(ficheroJSON):
+    
+            # Lectura de la informacion del fichero JSON
+            with open(ficheroJSON) as ficheroEventos:
+                data = json.load(ficheroEventos)
+                if len(data['siguiente_evento']) > 0:
+                    for event in data['siguiente_evento']:
+                        self.speak("El " + event['fecha'] + " a las " + event['hora'] + " tienes " + event['nombre'])
+                else:
+                    self.speak("No existen eventos próximos")
+                    
+        else:
+            self.speak("Lo siento, no dispongo de esa información")
 
         # # Respuesta con el evento proximo mas cercano
         # self.speak_dialog('campus.evento.siguiente')
         # self.speak(eventos[0].find_element(by=By.TAG_NAME, value='h3').text + formatear_fecha(
         #     eventos[0].find_element(by=By.CLASS_NAME, value='col-11').text.split(" » ")[0]))
 
-        driver.close()
+#         driver.close()
 
 
 def create_skill():
