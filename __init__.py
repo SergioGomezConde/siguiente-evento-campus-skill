@@ -21,7 +21,12 @@ class SiguienteEventoCampus(MycroftSkill):
                 data = json.load(ficheroEventos)
                 if len(data['eventos']) > 0:
                     event = data['eventos'][0]
-                    self.speak("El " + event['fecha'] + " a las " + event['hora'] + " tienes " + event['nombre'])
+                    if ("13:" in event['hora']) or ("01:" in event['hora']):
+                        self.speak("El " + event['fecha'] + " a la " + event['hora'] + " tienes " + event['nombre'])
+
+                    else:
+                        self.speak("El " + event['fecha'] + " a las " + event['hora'] + " tienes " + event['nombre'])
+
                 else:
                     self.speak("No existen eventos próximos")
 
