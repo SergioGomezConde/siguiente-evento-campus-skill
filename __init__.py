@@ -30,6 +30,8 @@ class SiguienteEventoCampus(MycroftSkill):
                 else:
                     self.speak("No existen eventos próximos")
 
+            ficheroEventos.close()
+
         else:
             self.speak("Lo siento, no dispongo de esa información")
 
